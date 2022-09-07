@@ -1,4 +1,5 @@
 from openpyxl import load_workbook
+from openpyxl.styles import Font
 from tkinter import filedialog
 import os
 
@@ -12,33 +13,50 @@ sheet = workbook.active
 #get the maximum rows
 maxRows = sheet.max_row
 
-#get total dues collected
-#sheet[f"A{maxRows+1}"] = "=SUM(IF($F$2:$F${maxRows}=FALSE,$I$2:$I${maxRows},0))+SUM(IF(K2:K{maxRows}<>0,I2:I{maxRows},0))"
+writtenOffA = sheet[f"A{maxRows+1}"]
+writtenOffB = sheet[f"B{maxRows+1}"]
+writtenOffC = sheet[f"C{maxRows+1}"]
+
+collectedA = sheet[f"A{maxRows+2}"]
+collectedB = sheet[f"B{maxRows+2}"]
+collectedC = sheet[f"C{maxRows+2}"]
+
+inCollectionsA = sheet[f"A{maxRows+3}"]
+inCollectionsB = sheet[f"B{maxRows+3}"]
+inCollectionsC = sheet[f"C{maxRows+3}"]
+
+totalA = sheet[f"A{maxRows+4}"]
+totalB = sheet[f"B{maxRows+4}"]
 
 #written Off
-sheet[f"A{maxRows+1}"] = "Written Off"
-sheet[f"B{maxRows+1}"] = f"=SUMIFS(I2:I{maxRows},F2:F{maxRows},FALSE)"
+writtenOffA.value = "Written Off"
+writtenOffB.value = f"=SUMIFS(I2:I{maxRows},F2:F{maxRows},FALSE)"
 #percent written off
-sheet[f"C{maxRows+1}"] = f"=B{maxRows+1}/B{maxRows+4}"
-sheet[f"C{maxRows+1}"].number_format = "0.00%"
+writtenOffC.value = f"=B{maxRows+1}/B{maxRows+4}"
+writtenOffC.number_format = "0.00%"
 
 #Retained
-sheet[f"A{maxRows+2}"] = "Collected"
-sheet[f"B{maxRows+2}"] = f"=SUMIFS(I2:I{maxRows},F2:F{maxRows},TRUE,K2:K{maxRows},\"=0\")"
+collectedA.value = "Collected"
+collectedB.value = f"=SUMIFS(I2:I{maxRows},F2:F{maxRows},TRUE,K2:K{maxRows},\"=0\")"
 #percent Retained(collected)
-sheet[f"C{maxRows+2}"] = f"=B{maxRows+2}/B{maxRows+4}"
-sheet[f"C{maxRows+2}"].number_format = "0.00%"
+collectedC.value = f"=B{maxRows+2}/B{maxRows+4}"
+collectedC.number_format = "0.00%"
 
-#AB Due
-sheet[f"A{maxRows+3}"] = "In Collections"
-sheet[f"B{maxRows+3}"] = f"=SUMIFS(I2:I{maxRows},F2:F{maxRows},TRUE,K2:K{maxRows},\"<>0\")"
+#AB Due (in Collections)
+inCollectionsA.value = "In Collections"
+inCollectionsB.value = f"=SUMIFS(I2:I{maxRows},F2:F{maxRows},TRUE,K2:K{maxRows},\"<>0\")"
 #percent AB Due
-sheet[f"C{maxRows+3}"] = f"=B{maxRows+3}/B{maxRows+4}"
-sheet[f"C{maxRows+3}"].number_format = "0.00%"
+inCollectionsC.value = f"=B{maxRows+3}/B{maxRows+4}"
+inCollectionsC.number_format = "0.00%"
+
+#BOLD the inCollections Row
+inCollectionsA.font = Font(bold = True)
+inCollectionsB.font = Font(bold = True)
+inCollectionsC.font = Font(bold = True)
 
 #total Billed
-sheet[f"A{maxRows+4}"] = "Total Billed"
-sheet[f"B{maxRows+4}"] = f"=SUM(I2:I{maxRows})"
+totalA.value = "Total Billed"
+totalB.value = f"=SUM(I2:I{maxRows})"
 
 
 workbook.save(workbookFilePath)
