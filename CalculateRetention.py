@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 from openpyxl.styles import Font
+from openpyxl.styles.borders import Border, Side
 from tkinter import filedialog
 import os
 
@@ -27,6 +28,21 @@ inCollectionsC = sheet[f"C{maxRows+3}"]
 
 totalA = sheet[f"A{maxRows+4}"]
 totalB = sheet[f"B{maxRows+4}"]
+totalC = sheet[f"C{maxRows+4}"]
+
+writtenOffA.border = Border(top=Side(style="thin"),left=Side(style="thin"))
+writtenOffB.border = Border(top=Side(style="thin"))
+writtenOffC.border = Border(top=Side(style="thin"),right=Side(style="thin"))
+
+collectedA.border = Border(left=Side(style="thin"))
+collectedC.border = Border(right=Side(style="thin"))
+
+inCollectionsA.border = Border(left=Side(style="thin"))
+inCollectionsC.border = Border(right=Side(style="thin"))
+
+totalA.border = Border(bottom=Side(style="thin"),left=Side(style="thin"))
+totalB.border = Border(bottom=Side(style="thin"))
+totalC.border = Border(bottom=Side(style="thin"),right=Side(style="thin"))
 
 #written Off
 writtenOffA.value = "Written Off"
